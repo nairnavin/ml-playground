@@ -10,7 +10,7 @@ def init_vectordb():
     connections.connect(host=HOST, port=PORT, secure=False)
 
     # Create collection if not exists
-    collection_name = 'financial_docs_collection'
+    collection_name = os.getenv('MILVUS_COLLECTION_NAME')
 
     # Remove collection if it already exists (only for test)
     if utility.has_collection(collection_name):

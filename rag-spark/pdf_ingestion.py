@@ -39,7 +39,6 @@ CHUNK_OVERLAP = 50
 # Define a UDF to extract text using PyPDF
 def extract_text(file_path):
     reader = PdfReader(file_path)
-    #docs = []
     text = ''
     for i in range(0,len(reader.pages)):
         text += reader.pages[i].extract_text()
@@ -49,17 +48,14 @@ def extract_text(file_path):
 # Define the function to create embeddings
 def create_embedding(text):
     # Create a SentenceTransformer model
-    #transformer = SentenceTransformer('distilbert-base-nli-mean-tokens')
-    transformer = SentenceTransformer('all-MiniLM-L12-v2')
+    transformer = SentenceTransformer(os.getenv('EMBEDDING_MODEL'))
     embeddings = transformer.encode(text, convert_to_tensor=True)
     return embeddings.numpy().tolist()
 
 
 def extract_text_chunks(symbol, text):
-    #sentences = [sent.text for sent in nlp(text).sents]
     metadata = "Document contains context of " + symbol \
         + " and is relevant to the annual reports / financial statements/ 10-K SEC fillings\n"
-    # Extract text from PDF files with each line containing name of file and array of page text
     chunks = []
     for i in range(0, len(text), CHUNK_SIZE):
         if i > CHUNK_OVERLAP:
@@ -96,7 +92,6 @@ def get_embedded_chunks(pdf_directory):
         print(file)
         if file.endswith(".pdf"):
             pdf_file_paths.append(os.path.join(pdf_directory, file))
-    print(pdf_file_paths)
     # Create DataFrame with file paths
     pdf_files = spark.createDataFrame(pdf_file_paths, "string").toDF("file_path")
     pdf_files = pdf_files.select(
@@ -116,13 +111,12 @@ def get_embedded_chunks(pdf_directory):
 
 def ingest_data():
     print("PDF ingestion started...")
-    print('Get embeddings from PDF ...')
     chunked_data = get_embedded_chunks("./data/annual_reports")
     # Connect to Milvus Database
     connections.connect(host=os.getenv('MILVUS_HOST'),
                         port=os.getenv('MILVUS_PORT'), secure=False)
     # Create collection if not exists
-    collection_name = 'financial_docs_collection'
+    collection_name = os.getenv('MILVUS_COLLECTION_NAME')
     collection = Collection(collection_name)
     collection.insert(chunked_data.toPandas())
     collection.flush()
