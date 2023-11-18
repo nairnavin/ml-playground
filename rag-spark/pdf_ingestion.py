@@ -17,8 +17,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 os.environ['PYARROW_IGNORE_TIMEZONE']='1'
-os.environ['JAVA_HOME'] = \
-    '/Users/navin.nair/Library/Java/JavaVirtualMachines/corretto-1.8.0_352/Contents/Home'
 os.environ['PYSPARK_SUBMIT_ARGS'] = \
     '--packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.2.1 pyspark-shell'
 os.environ['NUMEXPR_MAX_THREADS'] = '2'
@@ -111,7 +109,7 @@ def get_embedded_chunks(pdf_directory):
 
 def ingest_data():
     print("PDF ingestion started...")
-    chunked_data = get_embedded_chunks("./data/annual_reports")
+    chunked_data = get_embedded_chunks("./rag-spark/data/annual_reports")
     # Connect to Milvus Database
     connections.connect(host=os.getenv('MILVUS_HOST'),
                         port=os.getenv('MILVUS_PORT'), secure=False)

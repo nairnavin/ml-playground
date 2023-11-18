@@ -1,18 +1,37 @@
 # Ingest and embed at scale using Spark for Retrieval Augment Generation
 
-## Setup instructions
+## Setup instructions for Linux or MacOS
+
+> **_NOTE:_** For Windows, you may have to make some edits for it to work. I don't have a windows machine and hence not tested on it. If you make modifications, please share the instructions and I will update it in the readme.
 
 ### Install the required infastructure components using docker
 
 ```bash
 docker-compose -f rag-spark/docker-compose.yml up -d
-python -m venv myenv
+```
+
+> **_NOTE:_** If you get an error running the docker-compose and complains about permissions, try re-running the above command once more or give the folder explicit permission using chmod
+
+Confirm if all the containers are running properly by running:
+
+```bash
+docker ps
+```
+
+You should see the following containers:
+
+![Alt text](images/docker_ps.png)
+
+Let's setup the python environment. This needs python 3.10 and above
+
+```bash
+python3 -m venv myenv
 source myenv/bin/activate
 pip install --upgrade pip
 pip install -r rag-spark/requirements.txt
 ```
 
-> **_NOTE:_**  This needs python 3.10 and above
+> **_NOTE:_**  Before running any of the commands, please rename setup.env to .env and provide the required API token i.e. openai and/or replicate.
 
 ### Setup the collection in Milvus
 
@@ -38,8 +57,6 @@ If all goes well, the data will be in Milvus. You can check out the collection b
 ```bash
 python rag-spark/qa_service_openai.py
 ```
-
-> **_NOTE:_**  Before running this, please rename setup.env to .env and provide the openai API token
 
 A gradio based interface is shown. Point your browser to <http://127.0.0.1:7860> and try a few queries based on the financial statements
 
