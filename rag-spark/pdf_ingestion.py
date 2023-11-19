@@ -17,8 +17,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 os.environ['PYARROW_IGNORE_TIMEZONE']='1'
-os.environ['PYSPARK_SUBMIT_ARGS'] = \
-    '--packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.2.1 pyspark-shell'
 os.environ['NUMEXPR_MAX_THREADS'] = '2'
 os.environ['NUMEXPR_NUM_THREADS'] = '2'
 os.environ['OBJC_DISABLE_INITIALIZE_FORK_SAFETY'] = 'YES'

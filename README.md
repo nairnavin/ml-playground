@@ -6,6 +6,12 @@ This repo contains a collection of code samples to try out all things ML. The re
 git clone git@github.com:nairnavin/ml-playground.git
 ```
 
+or
+
+```bash
+git clone https://github.com/nairnavin/ml-playground.git
+```
+
 ## Ingest and embed at scale using Spark for Retrieval Augment Generation
 
 The setup instructions is in [this readme](rag-spark/README.md)
