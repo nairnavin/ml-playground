@@ -1,4 +1,4 @@
-# Ingest and embed at scale using Spark for Retrieval Augment Generation
+# Ingest and embed at scale using Spark for Retrieval Augmented Generation
 
 ## Setup instructions for Linux or MacOS
 
